@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}{{ agent.name }}{% endblock %}
+{% block content %}
+<div class="section-head">
+  <div>
+    <h1>Име - {{ agent.name }}</h1>
+    <p class="lede">Офис - {{ agent.office }}</p>
+    <p class="lede">Телефон - <a href="tel:{{ agent.phone }}">{{ agent.phone }}</a></p>
+    <p class="lede">Имейл - <a href="mailto:{{ agent.email }}">{{ agent.email }}</a></p>
+  </div>
+  <div class="actions">
+    <a class="button" href="{{ url_for('pages.edit_agent', agent_id=agent.id) }}">Редакция</a>
+    <form method="post" action="{{ url_for('pages.delete_agent', agent_id=agent.id) }}" onsubmit="return confirm('Да се изтрие ли брокерът?');">
+      <button class="button danger" type="submit">Изтриване</button>
+    </form>
+  </div>
+</div>
+<h2>Обяви</h2>
+{% if listings %}
+<div class="grid">
+  {% for listing in listings %}
+  {% include "_card.html" %}
+  {% endfor %}
+</div>
+{% else %}
+<p class="empty">Този брокер няма обяви.</p>
+{% endif %}
+{% endblock %}

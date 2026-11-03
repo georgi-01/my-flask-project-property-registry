@@ -1,0 +1,6 @@
+{% macro box(text, required, extra="") %}
+<label class="field {{ extra }}">
+  <span>{{ text }}{% if required %} *{% endif %}</span>
+  {{ caller() }}
+</label>
+{% endmacro %}

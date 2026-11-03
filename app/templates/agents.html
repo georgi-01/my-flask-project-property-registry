@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Брокери{% endblock %}
+{% block content %}
+<div class="section-head">
+  <h1>Брокери</h1>
+  <a class="button" href="{{ url_for('pages.new_agent') }}">Нов брокер</a>
+</div>
+<form class="filters" method="get">
+  <label>Търсене
+    <input name="q" value="{{ q or '' }}" placeholder="име, офис, телефон, имейл" maxlength="160">
+  </label>
+  <button class="button" type="submit">Търси</button>
+</form>
+{% if agents %}
+<ul class="roster">
+  {% for agent in agents %}
+  <li>
+    <a href="{{ url_for('pages.agent_detail', agent_id=agent.id) }}">
+      <strong>Име - {{ agent.name }}</strong>
+      <span>Офис - {{ agent.office }}</span>
+      <span>Телефон - {{ agent.phone }}</span>
+      <span>Имейл - {{ agent.email }}</span>
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p class="empty">Няма брокери.</p>
+{% endif %}
+{% endblock %}

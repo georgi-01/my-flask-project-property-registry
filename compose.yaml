@@ -1,0 +1,81 @@
+name: imoti
+
+services:
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_PASSWORD: ${PGPASSWORD}
+      POSTGRES_DB: ${PGDATABASE}
+    volumes:
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  rabbitmq:
+    image: rabbitmq:4-management
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 5s
+      timeout: 10s
+      retries: 20
+
+  web:
+    build: .
+    image: imoti-web
+    env_file: .env
+    environment:
+      PGHOST: db
+      RABBITMQ_HOST: rabbitmq
+    deploy:
+      replicas: 2
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  worker:
+    image: imoti-web
+    pull_policy: never
+    command: python -m app.worker
+    env_file: .env
+    environment:
+      PGHOST: db
+      RABBITMQ_HOST: rabbitmq
+    init: true
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+
+  nginx:
+    build: ./nginx
+    ports:
+      - "8080:80"
+      - "8443:443"
+    depends_on:
+      - web
+    restart: unless-stopped
+
+  dozzle:
+    image: amir20/dozzle:v11.3.0
+    environment:
+      DOZZLE_NO_ANALYTICS: "true"
+      DOZZLE_DISABLE_SETUP_WIZARD: "true"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      - "9999:8080"
+
+volumes:
+  pgdata:

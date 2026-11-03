@@ -1,0 +1,25 @@
+{% from "_icons.html" import icon_apartment, icon_house %}
+<a class="card" href="{{ url_for('pages.listing_detail', listing_id=listing.id) }}">
+  <div class="cover">
+    {% if listing.kind == 'apartment' %}{{ icon_apartment() }}{% else %}{{ icon_house() }}{% endif %}
+    <span>{{ kinds[listing.kind] }}</span>
+    <strong>{{ listing.city }}</strong>
+  </div>
+  <div class="card-body">
+    <p class="meta">
+      <span>{{ deal_types[listing.deal_type] }}</span>
+      <span>{{ statuses[listing.status] }}</span>
+    </p>
+    <h2>{{ listing.title }}</h2>
+    <p class="address">{{ listing.address }}</p>
+    <p class="price">{{ listing.price_eur|price }}</p>
+    <p class="ppm">{{ listing.price_per_sqm|ppm }} · {{ listing.area_sqm|sqm }}</p>
+    <p class="facts">
+      {% if listing.kind == 'apartment' %}
+      {{ listing.rooms }} стаи · ет. {{ listing.floor }}/{{ listing.total_floors }}
+      {% else %}
+      {{ listing.floors }} ет. · двор {{ listing.yard_sqm|sqm }}
+      {% endif %}
+    </p>
+  </div>
+</a>

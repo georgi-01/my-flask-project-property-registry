@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+{% from "_fields.html" import box %}
+<h1>{{ title }}</h1>
+<form class="stack form-grid" method="post" id="listing-form">
+  {% call box("Вид", true) %}
+    {% if locked_kind %}
+    <input type="hidden" name="kind" value="{{ listing.kind }}">
+    <input value="{{ kinds[listing.kind] }}" disabled>
+    {% else %}
+    <select name="kind" id="kind" required>
+      {% for key, label in kinds.items() %}
+      <option value="{{ key }}" {% if listing.kind == key %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+    {% endif %}
+  {% endcall %}
+  {% call box("Сделка", true) %}
+    <select name="deal_type" required>
+      {% for key, label in deal_types.items() %}
+      <option value="{{ key }}" {% if listing.deal_type == key %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+  {% endcall %}
+  {% call box("Заглавие", true, "wide") %}
+    <input name="title" required maxlength="160" list="titles" placeholder="Двустаен до парка" value="{{ listing.title or '' }}">
+  {% endcall %}
+  {% call box("Описание", false, "wide") %}
+    <textarea name="description" rows="4" maxlength="4000" placeholder="Южен апартамент до парка.">{{ listing.description or '' }}</textarea>
+  {% endcall %}
+  {% call box("Цена, €", true) %}
+    <input name="price_eur" id="price_eur" type="text" inputmode="decimal" data-decimal required maxlength="12" list="prices" placeholder="198000" value="{{ listing.price_eur if listing.price_eur is not none else '' }}">
+  {% endcall %}
+  {% call box("Площ, м²", true) %}
+    <input name="area_sqm" id="area_sqm" type="text" inputmode="decimal" data-decimal required maxlength="10" list="areas" placeholder="78" value="{{ listing.area_sqm if listing.area_sqm is not none else '' }}">
+  {% endcall %}
+  <p class="ppm wide">Цена на квадратен метър: <strong id="ppm">—</strong></p>
+  {% call box("Град", true) %}
+    <input name="city" required maxlength="80" list="cities" placeholder="София" value="{{ listing.city or '' }}">
+  {% endcall %}
+  {% call box("Адрес", false) %}
+    <input name="address" maxlength="200" placeholder="ул. „Цветна“ 12" value="{{ listing.address or '' }}">
+  {% endcall %}
+  {% call box("Година", false) %}
+    <input name="year_built" type="text" inputmode="numeric" data-digits maxlength="4" minlength="4" pattern="[0-9]{4}" list="years" placeholder="2014" value="{{ listing.year_built or '' }}">
+  {% endcall %}
+  {% call box("Статус", true) %}
+    <select name="status" required>
+      {% for key, label in statuses.items() %}
+      <option value="{{ key }}" {% if listing.status == key %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+  {% endcall %}
+  {% call box("Брокер", true, "wide") %}
+    <select name="agent_id" required>
+      <option value="">Мария Георгиева</option>
+      {% for agent in agents %}
+      <option value="{{ agent.id }}" {% if agent.id|string == listing.agent_id|string %}selected{% endif %}>{{ agent.name }} · {{ agent.office }}</option>
+      {% endfor %}
+    </select>
+  {% endcall %}
+
+  <fieldset class="wide" data-kind="apartment" {% if listing.kind != 'apartment' %}hidden{% endif %}>
+    <legend>Апартамент</legend>
+    {% call box("Стаи", true) %}
+      <input name="rooms" type="text" inputmode="numeric" data-digits required maxlength="2" list="rooms" placeholder="2" value="{{ listing.rooms|default('', true) }}">
+    {% endcall %}
+    {% call box("Етаж", true) %}
+      <input name="floor" type="text" inputmode="numeric" data-digits required maxlength="2" list="floors" placeholder="4" value="{{ listing.floor|default('', true) }}">
+    {% endcall %}
+    {% call box("Етажи в сградата", true) %}
+      <input name="total_floors" type="text" inputmode="numeric" data-digits required maxlength="2" list="floors" placeholder="8" value="{{ listing.total_floors|default('', true) }}">
+    {% endcall %}
+    {% call box("Асансьор", false) %}
+      <input type="checkbox" name="has_elevator" value="1" {% if listing.has_elevator|default(false) %}checked{% endif %}>
+    {% endcall %}
+    {% call box("Балкон", false) %}
+      <input type="checkbox" name="has_balcony" value="1" {% if listing.has_balcony|default(false) %}checked{% endif %}>
+    {% endcall %}
+  </fieldset>
+  <fieldset class="wide" data-kind="house" {% if listing.kind != 'house' %}hidden{% endif %}>
+    <legend>Къща</legend>
+    {% call box("Етажи на къщата", true) %}
+      <input name="floors" type="text" inputmode="numeric" data-digits required maxlength="1" list="floors" placeholder="2" value="{{ listing.floors|default('', true) }}">
+    {% endcall %}
+    {% call box("Двор, м²", true) %}
+      <input name="yard_sqm" type="text" inputmode="decimal" data-decimal required maxlength="10" list="yards" placeholder="200" value="{{ listing.yard_sqm|default('', true) }}">
+    {% endcall %}
+    {% call box("Гараж", false) %}
+      <input type="checkbox" name="has_garage" value="1" {% if listing.has_garage|default(false) %}checked{% endif %}>
+    {% endcall %}
+  </fieldset>
+  <div class="actions wide">
+    <button class="button" type="submit">Запази</button>
+    <a class="button ghost" href="{{ url_for('pages.listing_index') }}">Отказ</a>
+  </div>
+</form>
+{% include "_hints.html" %}
+<script src="{{ url_for('static', filename='form.js') }}"></script>
+{% endblock %}

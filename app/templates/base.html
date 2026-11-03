@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="bg">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Регистър{% endblock %} · Имотен регистър</title>
+  <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=7">
+</head>
+<body>
+  {% from "_icons.html" import icon_activity, icon_agents, icon_inquiries, icon_listings, icon_up %}
+  {% set listing_pages = ['pages.listing_index', 'pages.listing_detail', 'pages.new_listing', 'pages.edit_listing'] %}
+  {% set agent_pages = ['pages.agent_index', 'pages.agent_detail', 'pages.new_agent', 'pages.edit_agent'] %}
+  {% set inquiry_pages = ['pages.inquiry_index', 'pages.edit_inquiry'] %}
+  <header class="top">
+    <div class="bar">
+      <a class="brand" href="{{ url_for('pages.home') }}">
+        <span class="mark" aria-hidden="true"></span>
+        <strong>Имотен регистър</strong>
+      </a>
+      <nav>
+        <a class="{% if request.endpoint in listing_pages %}is-here{% endif %}" href="{{ url_for('pages.listing_index') }}">{{ icon_listings() }} Обяви</a>
+        <a class="{% if request.endpoint in agent_pages %}is-here{% endif %}" href="{{ url_for('pages.agent_index') }}">{{ icon_agents() }} Брокери</a>
+        <a class="{% if request.endpoint in inquiry_pages %}is-here{% endif %}" href="{{ url_for('pages.inquiry_index') }}">{{ icon_inquiries() }} Запитвания</a>
+        <a class="{% if request.endpoint == 'pages.journal' %}is-here{% endif %}" href="{{ url_for('pages.journal') }}">{{ icon_activity() }} Активност</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    {% for category, message in get_flashed_messages(with_categories=true) %}
+    <p class="flash {{ category }}" role="status">{{ message }}</p>
+    {% endfor %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer>
+    <dl class="footer-grid">
+      <div><dt>Контейнер</dt><dd>{{ hostname }}</dd></div>
+      <div><dt>Протокол</dt><dd>{{ request.scheme }}</dd></div>
+      <div><dt>Сертификат</dt><dd>self-signed</dd></div>
+      <div><dt>Сървър</dt><dd>Gunicorn</dd></div>
+      <div><dt>Балансьор</dt><dd>Nginx</dd></div>
+      <div><dt>Реплики</dt><dd>две</dd></div>
+      <div><dt>База</dt><dd>PostgreSQL</dd></div>
+      <div><dt>Опашка</dt><dd>RabbitMQ</dd></div>
+      <div><dt>Worker</dt><dd>отделен</dd></div>
+      <div><dt>Логове</dt><dd>Dozzle</dd></div>
+    </dl>
+  </footer>
+  <button class="to-top" type="button" aria-label="Нагоре" onclick="window.scrollTo({top:0,behavior:'smooth'})">{{ icon_up() }}</button>
+  <script src="{{ url_for('static', filename='fields.js') }}"></script>
+</body>
+</html>

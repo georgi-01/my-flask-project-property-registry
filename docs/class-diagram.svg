@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1480" height="1080" viewBox="0 0 1480 1080">
+<rect width="100%" height="100%" fill="#f3efe6"/>
+<text x="24" y="20" font-size="0" fill="none"> </text>
+<text x="24" y="710" font-family="Palatino, Georgia, serif" font-size="18" fill="#1e1a16">Слоеве: страница/API → услуга → хранилище → модел. Пунктир = зависимост. Запълнен ромб = композиция.</text>
+<line x1="440.0" y1="430" x2="490.0" y2="320" stroke="#1e1a16" fill="none"/><polygon points="490.0,306 482.0,320 498.0,320" fill="#fffcf7" stroke="#1e1a16"/>
+<line x1="775.0" y1="430" x2="490.0" y2="320" stroke="#1e1a16" fill="none"/><polygon points="490.0,306 482.0,320 498.0,320" fill="#fffcf7" stroke="#1e1a16"/>
+<line x1="274" y1="94" x2="340" y2="94" stroke="#1e1a16"/>
+<text x="302" y="86" font-size="12" font-family="ui-sans-serif, sans-serif">1</text>
+<text x="304" y="86" font-size="12" font-family="ui-sans-serif, sans-serif">0..*</text>
+<line x1="652" y1="94" x2="700" y2="94" stroke="#1e1a16"/><polygon points="640,94 652,87 664,94 652,101" fill="#1e1a16"/>
+<text x="668" y="86" font-size="12" font-family="ui-sans-serif, sans-serif">1</text>
+<text x="664" y="86" font-size="12" font-family="ui-sans-serif, sans-serif">0..*</text>
+<line x1="970" y1="150" x2="1020" y2="150" stroke="#1e1a16" stroke-dasharray="5 4"/><text x="925.0" y="142" font-size="12" font-family="ui-sans-serif, sans-serif">събитието пази id, не собственост</text>
+<line x1="244.0" y1="930" x2="475.0" y2="760" stroke="#6f675e" stroke-dasharray="4 3"/>
+<g font-family="ui-sans-serif, Segoe UI, sans-serif" font-size="13">
+<rect x="24" y="24" width="250" height="170" rx="8" fill="#fffcf7" stroke="#1e1a16"/>
+<rect x="24" y="24" width="250" height="32" rx="8" fill="#1f4d45"/>
+<rect x="24" y="42" width="250" height="14" fill="#1f4d45"/>
+<text x="36" y="45" fill="#f4f7f5" font-weight="700">Agent</text>
+<text x="36" y="74" fill="#1e1a16">id: int</text>
+<text x="36" y="90" fill="#1e1a16">name: str</text>
+<text x="36" y="106" fill="#1e1a16">phone: str</text>
+<text x="36" y="122" fill="#1e1a16">email: str</text>
+<text x="36" y="138" fill="#1e1a16">office: str</text>
+<line x1="24" y1="148" x2="274" y2="148" stroke="#e3d9c8"/>
+<text x="36" y="162" fill="#1f4d45">to_dict(): dict</text>
+</g>
+<g font-family="ui-sans-serif, Segoe UI, sans-serif" font-size="13">
+<rect x="340" y="24" width="300" height="282" rx="8" fill="#fffcf7" stroke="#1e1a16"/>
+<rect x="340" y="24" width="300" height="32" rx="8" fill="#1f4d45"/>
+<rect x="340" y="42" width="300" height="14" fill="#1f4d45"/>
+<text x="352" y="45" fill="#f4f7f5" font-weight="700">Listing  · абстрактен</text>
+<text x="352" y="74" fill="#1e1a16">id: int</text>
+<text x="352" y="90" fill="#1e1a16">kind: str</text>
+<text x="352" y="106" fill="#1e1a16">title: str</text>
+<text x="352" y="122" fill="#1e1a16">deal_type: str</text>
+<text x="352" y="138" fill="#1e1a16">price_eur: Decimal</text>
+<text x="352" y="154" fill="#1e1a16">area_sqm: Decimal</text>
+<text x="352" y="170" fill="#1e1a16">city: str</text>
+<text x="352" y="186" fill="#1e1a16">address: str</text>
+<text x="352" y="202" fill="#1e1a16">year_built: int</text>
+<text x="352" y="218" fill="#1e1a16">status: str</text>
+<text x="352" y="234" fill="#1e1a16">agent_id: int</text>
+<line x1="340" y1="244" x2="640" y2="244" stroke="#e3d9c8"/>
+<text x="352" y="258" fill="#1f4d45">price_per_sqm(): Decimal</text>
+<text x="352" y="274" fill="#1f4d45">to_dict(): dict</text>
+</g>
+<g font-family="ui-sans-serif, Segoe UI, sans-serif" font-size="13">
+<rect x="700" y="24" width="270" height="170" rx="8" fill="#fffcf7" stroke="#1e1a16"/>
+<rect x="700" y="24" width="270" height="32" rx="8" fill="#1f4d45"/>
+<rect x="700" y="42" width="270" height="14" fill="#1f4d45"/>
+<text x="712" y="45" fill="#f4f7f5" font-weight="700">Inquiry</text>
+<text x="712" y="74" fill="#1e1a16">id: int</text>
+<text x="712" y="90" fill="#1e1a16">listing_id: int</text>
+<text x="712" y="106" fill="#1e1a16">author_name: str</text>
+<text x="712" y="122" fill="#1e1a16">phone: str</text>
+<text x="712" y="138" fill="#1e1a16">message: str</text>
+<line x1="700" y1="148" x2="970" y2="148" stroke="#e3d9c8"/>
+<text x="712" y="162" fill="#1f4d45">to_dict(): dict</text>
+</g>
+<g font-family="ui-sans-serif, Segoe UI, sans-serif" font-size="13">
+<rect x="1020" y="24" width="280" height="186" rx="8" fill="#fffcf7" stroke="#1e1a16"/>
+<rect x="1020" y="24" width="280" height="32" rx="8" fill="#1f4d45"/>
+<rect x="1020" y="42" width="280" height="14" fill="#1f4d45"/>
+<text x="1032" y="45" fill="#f4f7f5" font-weight="700">ListingEvent</text>
+<text x="1032" y="74" fill="#1e1a16">id: int</text>
+<text x="1032" y="90" fill="#1e1a16">logged_at: datetime</text>
+<text x="1032" y="106" fill="#1e1a16">event: str</text>
+<text x="1032" y="122" fill="#1e1a16">listing_id: int</text>
+<text x="1032" y="138" fill="#1e1a16">title: str</text>
+<text x="1032" y="154" fill="#1e1a16">payload: str</text>
+<line x1="1020" y1="164" x2="1300" y2="164" stroke="#e3d9c8"/>
+<text x="1032" y="178" fill="#1f4d45">to_dict(): dict</text>
+</g>
+<g font-family="ui-sans-serif, Segoe UI, sans-serif" font-size="13">
+<rect x="300" y="430" width="280" height="170" rx="8" fill="#fffcf7" stroke="#1e1a16"/>
+<rect x="300" y="430" width="280" height="32" rx="8" fill="#1f4d45"/>
+<rect x="300" y="448" width="280" height="14" fill="#1f4d45"/>
+<text x="312" y="451" fill="#f4f7f5" font-weight="700">Apartment</text>
+<text x="312" y="480" fill="#1e1a16">rooms: int</text>
+<text x="312" y="496" fill="#1e1a16">floor: int</text>
+<text x="312" y="512" fill="#1e1a16">total_floors: int</text>
+<text x="312" y="528" fill="#1e1a16">has_elevator: bool</text>
+<text x="312" y="544" fill="#1e1a16">has_balcony: bool</text>
+<line x1="300" y1="554" x2="580" y2="554" stroke="#e3d9c8"/>
+<text x="312" y="568" fill="#1f4d45">to_dict(): dict</text>
+</g>
+<g font-family="ui-sans-serif, Segoe UI, sans-serif" font-size="13">
+<rect x="640" y="430" width="270" height="138" rx="8" fill="#fffcf7" stroke="#1e1a16"/>
+<rect x="640" y="430" width="270" height="32" rx="8" fill="#1f4d45"/>
+<rect x="640" y="448" width="270" height="14" fill="#1f4d45"/>
+<text x="652" y="451" fill="#f4f7f5" font-weight="700">House</text>
+<text x="652" y="480" fill="#1e1a16">floors: int</text>
+<text x="652" y="496" fill="#1e1a16">yard_sqm: Decimal</text>
+<text x="652" y="512" fill="#1e1a16">has_garage: bool</text>
+<line x1="640" y1="522" x2="910" y2="522" stroke="#e3d9c8"/>
+<text x="652" y="536" fill="#1f4d45">to_dict(): dict</text>
+</g>
+<g font-family="ui-sans-serif, Segoe UI, sans-serif" font-size="13">
+<rect x="24" y="760" width="280" height="170" rx="8" fill="#fffcf7" stroke="#1e1a16"/>
+<rect x="24" y="760" width="280" height="32" rx="8" fill="#1f4d45"/>
+<rect x="24" y="778" width="280" height="14" fill="#1f4d45"/>
+<text x="36" y="781" fill="#f4f7f5" font-weight="700">ListingService</text>
+<text x="36" y="814" fill="#1f4d45">search(raw)</text>
+<text x="36" y="830" fill="#1f4d45">get(id)</text>
+<text x="36" y="846" fill="#1f4d45">create(data)</text>
+<text x="36" y="862" fill="#1f4d45">update(id, data)</text>
+<text x="36" y="878" fill="#1f4d45">delete(id)</text>
+<text x="36" y="894" fill="#1f4d45">counts()</text>
+</g>
+<g font-family="ui-sans-serif, Segoe UI, sans-serif" font-size="13">
+<rect x="330" y="760" width="290" height="154" rx="8" fill="#fffcf7" stroke="#1e1a16"/>
+<rect x="330" y="760" width="290" height="32" rx="8" fill="#1f4d45"/>
+<rect x="330" y="778" width="290" height="14" fill="#1f4d45"/>
+<text x="342" y="781" fill="#f4f7f5" font-weight="700">ListingRepository</text>
+<text x="342" y="814" fill="#1f4d45">search(filters)</text>
+<text x="342" y="830" fill="#1f4d45">get(id)</text>
+<text x="342" y="846" fill="#1f4d45">add(listing)</text>
+<text x="342" y="862" fill="#1f4d45">delete(listing)</text>
+<text x="342" y="878" fill="#1f4d45">counts_by_kind()</text>
+</g>
+<g font-family="ui-sans-serif, Segoe UI, sans-serif" font-size="13">
+<rect x="650" y="760" width="250" height="138" rx="8" fill="#fffcf7" stroke="#1e1a16"/>
+<rect x="650" y="760" width="250" height="32" rx="8" fill="#1f4d45"/>
+<rect x="650" y="778" width="250" height="14" fill="#1f4d45"/>
+<text x="662" y="781" fill="#f4f7f5" font-weight="700">AgentService</text>
+<text x="662" y="814" fill="#1f4d45">search(text)</text>
+<text x="662" y="830" fill="#1f4d45">create(data)</text>
+<text x="662" y="846" fill="#1f4d45">update(id, data)</text>
+<text x="662" y="862" fill="#1f4d45">delete(id)</text>
+</g>
+<g font-family="ui-sans-serif, Segoe UI, sans-serif" font-size="13">
+<rect x="930" y="760" width="270" height="138" rx="8" fill="#fffcf7" stroke="#1e1a16"/>
+<rect x="930" y="760" width="270" height="32" rx="8" fill="#1f4d45"/>
+<rect x="930" y="778" width="270" height="14" fill="#1f4d45"/>
+<text x="942" y="781" fill="#f4f7f5" font-weight="700">InquiryService</text>
+<text x="942" y="814" fill="#1f4d45">create(listing_id, data)</text>
+<text x="942" y="830" fill="#1f4d45">update(id, data)</text>
+<text x="942" y="846" fill="#1f4d45">delete(id)</text>
+<text x="942" y="862" fill="#1f4d45">for_listing(id)</text>
+</g>
+<g font-family="ui-sans-serif, Segoe UI, sans-serif" font-size="13">
+<rect x="1230" y="760" width="220" height="106" rx="8" fill="#fffcf7" stroke="#1e1a16"/>
+<rect x="1230" y="760" width="220" height="32" rx="8" fill="#1f4d45"/>
+<rect x="1230" y="778" width="220" height="14" fill="#1f4d45"/>
+<text x="1242" y="781" fill="#f4f7f5" font-weight="700">EventRepository</text>
+<text x="1242" y="814" fill="#1f4d45">add(event, ...)</text>
+<text x="1242" y="830" fill="#1f4d45">latest(limit)</text>
+</g>
+</svg>

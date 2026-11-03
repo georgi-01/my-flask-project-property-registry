@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+{% from "_fields.html" import box %}
+<h1>{{ title }}</h1>
+<form class="stack narrow" method="post">
+  {% call box("Име", true) %}
+    <input name="name" required maxlength="120" list="names" placeholder="Мария Георгиева" value="{{ agent.name or '' }}">
+  {% endcall %}
+  {% call box("Телефон", true) %}
+    <input name="phone" required maxlength="40" list="phones" placeholder="+359 88 410 2210" value="{{ agent.phone or '' }}">
+  {% endcall %}
+  {% call box("Имейл", true) %}
+    <input name="email" type="email" required maxlength="160" pattern=".+@imoti\.bg" list="emails" placeholder="maria.georgieva@imoti.bg" title="Имейлът завършва с @imoti.bg" value="{{ agent.email or '' }}">
+  {% endcall %}
+  {% call box("Офис", true) %}
+    <input name="office" required maxlength="80" list="offices" placeholder="София" value="{{ agent.office or '' }}">
+  {% endcall %}
+  <div class="actions">
+    <button class="button" type="submit">Запази</button>
+    <a class="button ghost" href="{{ url_for('pages.agent_index') }}">Отказ</a>
+  </div>
+</form>
+{% include "_hints.html" %}
+{% endblock %}

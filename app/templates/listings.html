@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Обяви{% endblock %}
+{% block content %}
+<div class="section-head">
+  <h1>Обяви</h1>
+  <a class="button" href="{{ url_for('pages.new_listing') }}">Нова обява</a>
+</div>
+{% from "_fields.html" import caption %}
+<form class="filters" method="get">
+  <label>Търсене
+    <input name="q" value="{{ filters.q or '' }}" placeholder="Двустаен до парка" list="titles" maxlength="160">
+  </label>
+  <label>Град
+    <input name="city" value="{{ filters.city or '' }}" placeholder="София" list="cities" maxlength="80">
+  </label>
+  <label>Вид
+    <select name="kind">
+      <option value="">Всички</option>
+      {% for key, label in kinds.items() %}
+      <option value="{{ key }}" {% if filters.kind == key %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <label>Сделка
+    <select name="deal_type">
+      <option value="">Всички</option>
+      {% for key, label in deal_types.items() %}
+      <option value="{{ key }}" {% if filters.deal_type == key %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <label>Статус
+    <select name="status">
+      <option value="">Всички</option>
+      {% for key, label in statuses.items() %}
+      <option value="{{ key }}" {% if filters.status == key %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <label>Цена от, €
+    <input name="min_price" type="text" inputmode="decimal" data-decimal maxlength="12" list="prices" placeholder="50000" value="{{ filters.min_price or '' }}">
+  </label>
+  <label>Цена до, €
+    <input name="max_price" type="text" inputmode="decimal" data-decimal maxlength="12" list="prices" placeholder="250000" value="{{ filters.max_price or '' }}">
+  </label>
+  <button class="button" type="submit">Филтрирай</button>
+</form>
+{% include "_hints.html" %}
+{% if listings %}
+<div class="grid">
+  {% for listing in listings %}
+  {% include "_card.html" %}
+  {% endfor %}
+</div>
+{% else %}
+<p class="empty">Няма обяви по този филтър.</p>
+{% endif %}
+{% endblock %}

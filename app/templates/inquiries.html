@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Запитвания{% endblock %}
+{% block content %}
+<h1>Запитвания</h1>
+{% if inquiries %}
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Кога</th>
+        <th>Обява</th>
+        <th>Име</th>
+        <th>Телефон</th>
+        <th>Съобщение</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for inquiry in inquiries %}
+      <tr>
+        <td>{{ inquiry.created_at|when }}</td>
+        <td>
+          {% if inquiry.listing %}
+          <a href="{{ url_for('pages.listing_detail', listing_id=inquiry.listing_id) }}">{{ inquiry.listing.title }}</a>
+          {% else %}
+          {{ inquiry.listing_id }}
+          {% endif %}
+        </td>
+        <td>{{ inquiry.author_name }}</td>
+        <td>{{ inquiry.phone }}</td>
+        <td>{{ inquiry.message }}</td>
+        <td class="row-actions">
+          <a href="{{ url_for('pages.edit_inquiry', inquiry_id=inquiry.id) }}">Редакция</a>
+          <form method="post" action="{{ url_for('pages.delete_inquiry', inquiry_id=inquiry.id) }}">
+            <button class="text-button" type="submit">Изтрий</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<p class="empty">Няма запитвания. Отворете обява и оставете съобщение.</p>
+{% endif %}
+{% endblock %}

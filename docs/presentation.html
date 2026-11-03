@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="bg">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Имотен регистър — презентация</title>
+  <style>
+    :root { --paper:#f3efe6; --ink:#1e1a16; --muted:#6f675e; --pine:#1f4d45; --line:#e3d9c8; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #1e1a16; color: var(--ink); font-family: "Avenir Next", "Segoe UI", sans-serif; }
+    .deck { height: 100vh; display: grid; place-items: center; }
+    section { display: none; width: min(960px, calc(100vw - 32px)); min-height: min(560px, calc(100vh - 80px)); background: var(--paper); border-radius: 20px; padding: 40px 48px; }
+    section.active { display: block; }
+    h1 { font-family: Palatino, Georgia, serif; font-size: clamp(2rem, 5vw, 3.2rem); margin: 0 0 12px; letter-spacing: -0.03em; }
+    h2 { font-family: Palatino, Georgia, serif; font-size: 1.8rem; margin: 0 0 16px; }
+    p, li { font-size: 1.15rem; line-height: 1.45; }
+    .muted { color: var(--muted); }
+    ul { padding-left: 1.2rem; }
+    code { font-family: ui-monospace, monospace; font-size: 0.95em; }
+    .bar { margin-top: 18px; color: #f4f7f5; text-align: center; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <div class="deck">
+    <section class="active">
+      <p class="muted">Индивидуален проект</p>
+      <h1>Имотен регистър</h1>
+      <p>Обяви за апартаменти и къщи. Цени в евро, цена на квадратен метър, брокери и запитвания.</p>
+      <p class="muted">Flask · PostgreSQL · Nginx · RabbitMQ · Dozzle</p>
+    </section>
+    <section>
+      <h2>Какво прави системата</h2>
+      <ul>
+        <li>Каталог с филтър по град, вид, сделка, статус и цена.</li>
+        <li>Пълен CRUD за обяви, брокери и запитвания.</li>
+        <li>Същите операции през <code>/api</code>.</li>
+        <li>Активност на промените, пълнена от опашка, не от самата страница.</li>
+      </ul>
+    </section>
+    <section>
+      <h2>Слоеве</h2>
+      <p>Страница или API → услуга → хранилище → модел.</p>
+      <ul>
+        <li><code>pages</code> / <code>api</code> само превеждат заявката.</li>
+        <li><code>services</code> валидират и пускат събитие.</li>
+        <li><code>repositories</code> говорят с базата.</li>
+        <li>Няма суров SQL. Заявките са SQLAlchemy 2: <code>session.get</code>, <code>select(...)</code>.</li>
+      </ul>
+    </section>
+    <section>
+      <h2>Наследяване</h2>
+      <ul>
+        <li><code>Listing</code> държи общите полета и <code>price_per_sqm()</code>.</li>
+        <li><code>Apartment</code> добавя стаи, етаж, асансьор, балкон.</li>
+        <li><code>House</code> добавя етажи, двор и гараж.</li>
+        <li>Брокер 1 — много обяви. Обява ◆— много запитвания.</li>
+        <li>Цената е в евро. €/м² = цена / площ на имота, без двора.</li>
+      </ul>
+    </section>
+    <section>
+      <h2>Контейнери</h2>
+      <ul>
+        <li><code>db</code> — PostgreSQL 18, данните са във volume.</li>
+        <li><code>web</code> — две еднакви реплики на един образ.</li>
+        <li><code>worker</code> — същият образ, команда <code>python -m app.worker</code>.</li>
+        <li><code>rabbitmq</code>, <code>nginx</code>, <code>dozzle</code>.</li>
+        <li>Паролите идват от <code>.env</code>, не са зашити в кода или в образа.</li>
+      </ul>
+    </section>
+    <section>
+      <h2>Балансьор и HTTPS</h2>
+      <ul>
+        <li>Nginx слуша 80 и 443. Порт 80 праща към <code>https://localhost:8443</code>.</li>
+        <li>Сертификатът се създава в Dockerfile на Nginx с <code>openssl</code>, CN=localhost.</li>
+        <li><code>upstream</code> е <code>web:8000</code> с Docker DNS, затова вижда и двете реплики.</li>
+        <li>Долният ред на страницата показва името на контейнера и протокола.</li>
+      </ul>
+    </section>
+    <section>
+      <h2>RabbitMQ и тестове</h2>
+      <ul>
+        <li>Услугата публикува <code>listing.created</code> и останалите събития във fanout <code>imoti</code>.</li>
+        <li>Worker-ът пише в <code>listing_events</code>. Активността остава и след изтриване.</li>
+        <li><code>pytest</code> проверява валидацията и €/м² без Postgres, с фалшиво хранилище.</li>
+        <li>Отделен тест минава през истинския ORM и през REST клиента.</li>
+      </ul>
+    </section>
+    <section>
+      <h2>Пускане</h2>
+      <p><code>docker compose up --build</code></p>
+      <p>Сайт: <code>https://localhost:8443</code></p>
+      <p>Логове: <code>http://localhost:9999</code> · опашка: <code>http://localhost:15672</code></p>
+      <p class="muted">Keepalived не е сложен нарочно: виртуален IP върху Docker Desktop често не се вижда от браузъра и спира демото. Балансът се вижда от двете реплики и от access лога.</p>
+    </section>
+  </div>
+  <p class="bar"><span id="n">1</span> / 8 · стрелки за напред и назад</p>
+  <script>
+    var slides = Array.prototype.slice.call(document.querySelectorAll("section"));
+    var index = 0;
+    function show(next) {
+      index = (next + slides.length) % slides.length;
+      slides.forEach(function (slide, i) { slide.classList.toggle("active", i === index); });
+      document.getElementById("n").textContent = String(index + 1);
+    }
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "ArrowRight" || event.key === " ") show(index + 1);
+      if (event.key === "ArrowLeft") show(index - 1);
+    });
+  </script>
+</body>
+</html>

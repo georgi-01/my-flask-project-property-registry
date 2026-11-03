@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Начало{% endblock %}
+{% block content %}
+<section class="home-intro">
+  <div>
+    <h1>Начало</h1>
+    <p class="lede">Уеб-приложение на Flask с уеб-сървър Gunicorn, база PostgreSQL, балансьор Nginx, опашка RabbitMQ, отделен worker и логове в Dozzle.</p>
+  </div>
+  <div class="actions">
+    <a class="button" href="{{ url_for('pages.new_listing') }}">Нова обява</a>
+    <a class="button ghost" href="{{ url_for('pages.listing_index') }}">Всички обяви</a>
+  </div>
+</section>
+<dl class="stat-row">
+  <div><dt>Обяви</dt><dd>{{ counts.listings }}</dd></div>
+  <div><dt>Апартаменти</dt><dd>{{ counts.apartments }}</dd></div>
+  <div><dt>Къщи</dt><dd>{{ counts.houses }}</dd></div>
+  <div><dt>Брокери</dt><dd>{{ counts.agents }}</dd></div>
+  <div><dt>Запитвания</dt><dd>{{ counts.inquiries }}</dd></div>
+</dl>
+<section>
+  <div class="section-head">
+    <h2>Последни обяви</h2>
+    <a href="{{ url_for('pages.listing_index') }}">Към каталога</a>
+  </div>
+  {% if listings %}
+  <div class="grid">
+    {% for listing in listings %}
+    {% include "_card.html" %}
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="empty">Все още няма обяви.</p>
+  {% endif %}
+</section>
+{% endblock %}

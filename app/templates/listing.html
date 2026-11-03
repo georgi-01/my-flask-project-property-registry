@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}{{ listing.title }}{% endblock %}
+{% block content %}
+{% from "_icons.html" import icon_apartment, icon_house %}
+{% from "_fields.html" import box %}
+<article class="sheet">
+  <div class="cover tall">
+    {% if listing.kind == 'apartment' %}{{ icon_apartment() }}{% else %}{{ icon_house() }}{% endif %}
+    <span>{{ kinds[listing.kind] }}</span>
+    <strong>{{ listing.city }}</strong>
+  </div>
+  <div>
+    <p class="meta">
+      <span>{{ deal_types[listing.deal_type] }}</span>
+      <span>{{ statuses[listing.status] }}</span>
+      {% if listing.year_built %}<span>{{ listing.year_built }}</span>{% endif %}
+    </p>
+    <h1>{{ listing.title }}</h1>
+    <p class="address">{{ listing.address }}</p>
+    <p class="price">{{ listing.price_eur|price }}</p>
+    <p class="ppm">{{ listing.price_per_sqm|ppm }} · площ {{ listing.area_sqm|sqm }}</p>
+    <dl class="specs">
+      {% if listing.kind == 'apartment' %}
+      <div><dt>Стаи</dt><dd>{{ listing.rooms }}</dd></div>
+      <div><dt>Етаж</dt><dd>{{ listing.floor }} от {{ listing.total_floors }}</dd></div>
+      <div><dt>Асансьор</dt><dd>{{ "Да" if listing.has_elevator else "Не" }}</dd></div>
+      <div><dt>Балкон</dt><dd>{{ "Да" if listing.has_balcony else "Не" }}</dd></div>
+      {% else %}
+      <div><dt>Етажи</dt><dd>{{ listing.floors }}</dd></div>
+      <div><dt>Двор</dt><dd>{{ listing.yard_sqm|sqm }}</dd></div>
+      <div><dt>Гараж</dt><dd>{{ "Да" if listing.has_garage else "Не" }}</dd></div>
+      {% endif %}
+      <div><dt>Брокер</dt><dd><a href="{{ url_for('pages.agent_detail', agent_id=listing.agent_id) }}">{{ listing.agent.name }}</a></dd></div>
+      <div><dt>Телефон</dt><dd>{{ listing.agent.phone }}</dd></div>
+    </dl>
+    {% if listing.description %}<p class="lede">{{ listing.description }}</p>{% endif %}
+    <div class="actions">
+      <a class="button" href="{{ url_for('pages.edit_listing', listing_id=listing.id) }}">Редакция</a>
+      <form method="post" action="{{ url_for('pages.delete_listing', listing_id=listing.id) }}" onsubmit="return confirm('Да се изтрие ли обявата?');">
+        <button class="button danger" type="submit">Изтриване</button>
+      </form>
+    </div>
+  </div>
+</article>
+
+<section class="split">
+  <div>
+    <h2>Запитване</h2>
+    <form class="stack" method="post" action="{{ url_for('pages.create_inquiry', listing_id=listing.id) }}">
+      {% call box("Име", true) %}
+        <input name="author_name" required maxlength="120" list="names" placeholder="Анна Маринова">
+      {% endcall %}
+      {% call box("Телефон", true) %}
+        <input name="phone" required maxlength="40" list="phones" placeholder="+359 88 111 2233">
+      {% endcall %}
+      {% call box("Съобщение", true) %}
+        <textarea name="message" rows="4" required maxlength="2000" placeholder="Свободна ли е в събота?"></textarea>
+      {% endcall %}
+      <button class="button" type="submit">Изпрати</button>
+    </form>
+    {% include "_hints.html" %}
+  </div>
+  <div>
+    <h2>Получени</h2>
+    {% if inquiries %}
+    <ul class="plain">
+      {% for inquiry in inquiries %}
+      <li>
+        <strong>{{ inquiry.author_name }}</strong>
+        <span>{{ inquiry.phone }}</span>
+        <p>{{ inquiry.message }}</p>
+        <form method="post" action="{{ url_for('pages.delete_inquiry', inquiry_id=inquiry.id) }}">
+          <input type="hidden" name="next" value="listing">
+          <button class="text-button" type="submit">Изтрий</button>
+        </form>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="empty">Няма запитвания за тази обява.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
