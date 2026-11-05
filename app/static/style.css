@@ -61,7 +61,7 @@ p { margin: 0; }
 button, [role="button"], .button { cursor: pointer; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
-.top, main, footer { position: relative; z-index: 1; }
+.top, main { position: relative; z-index: 1; }
 .top {
   position: fixed;
   top: 0;
@@ -120,13 +120,13 @@ nav a {
 }
 nav a:hover, nav a.is-here { border-color: var(--accent); }
 
-main { max-width: 1120px; margin: 0 auto; padding: 88px 20px 168px; }
+main { max-width: 1120px; margin: 0 auto; padding: 88px 20px 168px; min-height: 850px;}
 footer {
-  position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 25;
+  position: relative;
+  z-index: 0;
   max-width: none;
   margin: 0;
   padding: 12px 20px;
@@ -183,13 +183,13 @@ footer {
 .to-top {
   position: fixed;
   right: 18px;
-  bottom: 132px;
+  bottom: 16px;
   z-index: 40;
   width: 44px;
   height: 44px;
   border-radius: 999px;
   border: 1px solid var(--line);
-  background: var(--surface);
+  background: var(#e1ded4);
   color: var(--ink);
   display: grid;
   place-items: center;
