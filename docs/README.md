@@ -4,13 +4,21 @@
 
 ## Стартиране
 
-От папката на проекта:
+Командите са от папката на проекта. На двете системи се стартират различни файлове.
+
+За Linux се стартира `install.sh`:
 
 ```bash
 ./install.sh
 ```
 
-Скриптът проверява Docker, копира `.env.example` в `.env`, ако файлът липсва, и пуска `docker compose up --build -d`.
+За Windows се стартира `install.bat`:
+
+```bat
+.\install.bat
+```
+
+И двата файла проверяват Docker, създават `.env.example` и `.env`, ако липсват, и пускат `docker compose up --build -d`.
 
 Сайт: https://localhost:8443
 HTTP :8080 пренасочва към HTTPS. Сертификатът е self-signed.
